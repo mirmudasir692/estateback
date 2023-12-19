@@ -11,3 +11,8 @@ discount model
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "image")
+
+
+@admin.register(Discount)
+class DiscountAdmin(admin.ModelAdmin):
+    list_display = ("id", "event", "start_on", "end_on", "percentage_discount")
