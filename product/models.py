@@ -31,7 +31,7 @@ class Product(models.Model):
     description = models.TextField(max_length=500, null=True)
     image = models.ManyToManyField(ProductImage, related_name="products")
     video = models.ManyToManyField(ProductVideo, related_name="products")
-
+    
     def __str__(self):
         return f"product {self.id}"
 

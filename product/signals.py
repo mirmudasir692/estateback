@@ -15,3 +15,4 @@ def DeleteImage(sender, instance, **kwargs):
     storage, path = instance.video.storage, instance.video.path
     if storage.exists(path):
         storage.delete(path)
+        
