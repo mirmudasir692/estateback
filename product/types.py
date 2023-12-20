@@ -24,5 +24,13 @@ class ProductType(DjangoObjectType):
 
     class Meta:
         model = Product
-        fields = ("category", "location_cords", "total_area", "available", "price",
+        fields = ("id", "category", "location_cords", "total_area", "available", "price",
                   "discounted_price", "description", "image", "video")
+
+
+class ExtendedProductType(graphene.ObjectType):
+    products = graphene.List(ProductType)
+    has_next = graphene.Boolean()
+    has_previous = graphene.Boolean()
+    total_pages = graphene.Int()
+    page = graphene.Int()

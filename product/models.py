@@ -3,6 +3,7 @@ from imagekit.models import ProcessedImageField
 from django.contrib.gis.db import models as GeoModels
 from categories.models import Category, Discount
 from imagekit.processors import ResizeToFill
+from django.db.models import F, Q
 
 
 class ProductImage(models.Model):
@@ -18,6 +19,18 @@ class ProductVideo(models.Model):
     video = models.FileField(upload_to="product_videos")
 
 
+class ProductManager(models.Manager):
+    def get_recommended_products(self, category="", price=0, price_under_range=False):
+        products = self.filter(Q(available=True) &
+                               ((Q(category__title=category) if category != "" else Q()) &
+                                (Q(price__lt=price) if price_under_range and price != 0 else Q(price__gt=price)
+                                 if price != 0 else Q()
+                                 )
+                                )).select_related("category").prefetch_related("image", "video")
+
+        return products
+
+
 class Product(models.Model):
     """
     this is the product model, which will represent the item which we will sell
@@ -31,9 +44,10 @@ class Product(models.Model):
     description = models.TextField(max_length=500, null=True)
     image = models.ManyToManyField(ProductImage, related_name="products")
     video = models.ManyToManyField(ProductVideo, related_name="products")
-    
+    ip_address = models.GenericIPAddressField(null=True)
+    address = models.CharField(null=True)
+
+    objects = ProductManager()
+
     def __str__(self):
         return f"product {self.id}"
-
-
-
