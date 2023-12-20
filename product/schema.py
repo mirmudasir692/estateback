@@ -8,4 +8,4 @@ class Mutation(graphene.ObjectType):
     get_items = ProductMutation.Field()
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = graphene.Schema(query=Query)

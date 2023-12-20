@@ -4,6 +4,7 @@ from django.contrib.gis.db import models as GeoModels
 from categories.models import Category, Discount
 from imagekit.processors import ResizeToFill
 from django.db.models import F, Q
+from graphql import GraphQLError
 
 
 class ProductImage(models.Model):
@@ -22,13 +23,23 @@ class ProductVideo(models.Model):
 class ProductManager(models.Manager):
     def get_recommended_products(self, category="", price=0, price_under_range=False):
         products = self.filter(Q(available=True) &
-                               ((Q(category__title=category) if category != "" else Q()) &
+                               ((Q(category__title=category.title()) if category != "" else Q()) &
                                 (Q(price__lt=price) if price_under_range and price != 0 else Q(price__gt=price)
-                                 if price != 0 else Q()
+                                 if price != 0 else Q(price__gt=0)
                                  )
                                 )).select_related("category").prefetch_related("image", "video")
 
         return products
+
+    def checkout_product(self, product_id=None):
+
+        """if not product_id raise error"""
+
+        if not product_id:
+            raise GraphQLError(message="please provide provide id")
+
+        product = self.get(id=product_id).select_related("category").prefetch_related("image", "video")
+        return product
 
 
 class Product(models.Model):
