@@ -2,18 +2,30 @@ import graphene
 from .types import ProductType, ExtendedProductType
 from .models import Product
 from django.core.paginator import Paginator
+from categories.types import CategoryType
+from categories.models import Category
+from time import sleep
 
 
 class Query(graphene.ObjectType):
-    get_products = graphene.Field(ExtendedProductType, category=graphene.String(default_value=""),
+    get_categories = graphene.List(CategoryType)  # get the categories with their products
+
+    get_products = graphene.Field(ExtendedProductType, category_id=graphene.ID(default_value=0),
                                   price=graphene.Int(default_value=1),
                                   price_under_range=graphene.Boolean(default_value=False),
                                   page=graphene.Int(default_value=1))
+    get_products_for_home = graphene.List(ProductType, category=graphene.String())
 
     checkout_product = graphene.Field(ProductType, product_id=graphene.ID())
 
-    def resolve_get_products(self, info, category, price, price_under_range, page=1):
-        products = Product.objects.get_recommended_products(category=category, price=price,
+
+    def resolve_get_products_for_home(self, info, category=0):
+        products = Product.objects.get_products_for_home(category)
+        print(products)
+        return products
+
+    def resolve_get_products(self, info, category_id, price, price_under_range, page=1):
+        products = Product.objects.get_recommended_products(category_id=category_id, price=price,
                                                             price_under_range=price_under_range)
         products_per_page = 4
         paginator = Paginator(products, products_per_page)
@@ -33,6 +45,12 @@ class Query(graphene.ObjectType):
                 page=page
             )
 
+
+
     def resolve_checkout_product(self, info, product_id):
         product = Product.objects.checkout_product(product_id)
-        return Product
+        return product
+
+    def resolve_get_categories(self, info):
+        categories = Category.objects.get_categories()
+        return categories
