@@ -1,5 +1,7 @@
+import tracemalloc
+
 from django.db import models
-from django.db.models import F, Q
+tracemalloc.start()
 
 
 class Discount(models.Model):

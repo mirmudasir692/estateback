@@ -1,10 +1,10 @@
 import graphene
-from .types import ProductType, ExtendedProductType
-from .models import Product
 from django.core.paginator import Paginator
-from categories.types import CategoryType
+
 from categories.models import Category
-from time import sleep
+from categories.types import CategoryType
+from .models import Product
+from .types import ProductType, ExtendedProductType
 
 
 class Query(graphene.ObjectType):
@@ -27,7 +27,7 @@ class Query(graphene.ObjectType):
     def resolve_get_products(self, info, category_id, price, price_under_range, page=1):
         products = Product.objects.get_recommended_products(category_id=category_id, price=price,
                                                             price_under_range=price_under_range)
-        products_per_page = 4
+        products_per_page = 9
         paginator = Paginator(products, products_per_page)
         products_for_page = paginator.get_page(page)
         has_next = products_for_page.has_next()
