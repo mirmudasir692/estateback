@@ -45,10 +45,10 @@ class Query(graphene.ObjectType):
                 page=page
             )
 
-
-
     def resolve_checkout_product(self, info, product_id):
+        print(product_id)
         product = Product.objects.checkout_product(product_id)
+        print(product)
         return product
 
     def resolve_get_categories(self, info):

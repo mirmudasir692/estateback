@@ -53,7 +53,7 @@ class ProductManager(models.Manager):
         if not product_id:
             raise GraphQLError(message="please provide provide id")
 
-        product = self.get(id=product_id).select_related("category").prefetch_related("image", "video")
+        product = self.select_related("category").prefetch_related("image", "video").get(id=product_id)
         return product
 
     def get_products_by_category(self):

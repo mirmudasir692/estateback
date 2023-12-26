@@ -25,7 +25,7 @@ class ProductType(DjangoObjectType):
     class Meta:
         model = Product
         fields = ("id", "category", "location_cords", "total_area", "available", "price",
-                  "discounted_price", "description", "image", "video", "cover_image")
+                  "discounted_price", "description", "image", "video", "cover_image", "ip_address", "address")
 
 
 class ExtendedProductType(graphene.ObjectType):
