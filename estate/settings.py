@@ -48,10 +48,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graphene_django',
     'graphene_gis',
+    "rest_framework",
     'django.contrib.gis',
     'django_extensions',
     "categories",
-    "product"
+    "product",
+    "appointment"
 ]
 
 
