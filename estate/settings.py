@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load environment variables from the .env file
 
@@ -92,6 +93,7 @@ ASGI_APPLICATION = 'estate.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# Database settings for PostGIS
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
@@ -102,6 +104,9 @@ DATABASES = {
         'PORT': '5432',  # or your database port
     }
 }
+
+# Update the 'default' configuration with dj_database_url settings
+DATABASES['default'].update(dj_database_url.config(conn_max_age=600, conn_health_checks=True))
 
 
 # Password validation
