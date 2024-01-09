@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'django_extensions',
     "categories",
     "product",
-    "appointment"
+    "appointment",
+    "services",
+    "phonenumber_field",
 ]
 
 
