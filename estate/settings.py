@@ -107,8 +107,8 @@ DATABASES = {
     }
 }
 
-# Update the 'default' configuration with dj_database_url settings
-DATABASES['default'].update(dj_database_url.config(conn_max_age=600, conn_health_checks=True))
+# # Update the 'default' configuration with dj_database_url settings
+# DATABASES['default'].update(dj_database_url.config(conn_max_age=600, conn_health_checks=True))
 
 
 # Password validation
