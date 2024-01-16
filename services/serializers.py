@@ -42,4 +42,3 @@ class QuerySerializer(serializers.ModelSerializer):
         """ Get the data from the request and place query in the database"""
 
         Query.objects.add_query(product_id, message, email, phone_num)
-
